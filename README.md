@@ -37,4 +37,596 @@
 
 `http://host:port/status` e.g http:localhost:4000/status
 
-*Located in the root of the project*
+
+**MUSIC CATALOG REST API**
+----
+  <_Once installed the application provides the following web services. The samples provided below assume the application is running on http:localhost:4000_>
+
+## Health
+
+* **URL: `/health`**
+
+  <_This service checks whether the api is available_>
+
+* **Method:**
+  `GET`
+
+* **Success Response:**
+  * **Code:** 200 <br />
+  * **Content-type:** text/html <br />
+    **Body:** `Ok`
+ 
+* **Error Response:**
+  * **Code:** 404 NOT FOUND <br />
+
+* **Sample Call:**
+curl --location --request GET 'localhost:4000/health'
+
+* **Notes:**
+  <_This is a ping service that can allow cloud platforms mark the service as available._> 
+
+## Status
+
+* **URL: `/status`**
+
+  <_This service checks whether the application running the service is properly configured.>
+
+* **Method:**
+  `GET`
+
+* **Success Response:**
+  * **Code:** 200 <br />
+  * **Content-type:** application/json <br />
+    **Body:** 
+```json
+        {
+    "ip": "::1",
+    "health": "Ok",
+    "env": {
+        "port": "Set",
+        "app_name": "Set",
+        "HOST": "Set",
+        "USER": "Set",
+        "PASSWORD": "Set",
+        "DB": "Set"
+    }
+}
+```
+* **Error Response:**
+  * **Code:** 404 NOT FOUND <br />
+
+* **Sample Call:**
+curl --location --request GET 'localhost:4000/status'
+
+* **Notes:**
+  <_This is a ping service that checks if the environment is properly configured and returns the client's ip._> 
+
+
+# Genres
+
+* **URL: `/genre`**
+
+  <_Genre List_>
+
+* **Method:**
+  `GET`
+
+* **Success Response:**
+  * **Code:** 200 <br />
+  * **Content-type:** application/json <br />
+    **Body:** 
+```json
+{
+    "status": 200,
+    "message": "Successful listing of genre",
+    "data": [
+        {
+            "name": "Blues",
+            "date_added": "2021-03-24T22:02:35.000Z",
+            "date_updated": null
+        },
+        {
+            "name": "Jazz",
+            "date_added": "2021-03-24T22:01:48.000Z",
+            "date_updated": null
+        },
+        {
+            "name": "R&B",
+            "date_added": "2021-03-24T22:02:35.000Z",
+            "date_updated": null
+        },
+        {
+            "name": "Rap",
+            "date_added": "2021-03-24T22:02:35.000Z",
+            "date_updated": null
+        },
+        {
+            "name": "Rock",
+            "date_added": "2021-03-24T22:01:48.000Z",
+            "date_updated": null
+        },
+        {
+            "name": "Soul",
+            "date_added": "2021-03-24T22:02:35.000Z",
+            "date_updated": null
+        }
+    ]
+}
+```
+* **Error Response:**
+  * **Code:** 404 NOT FOUND <br />
+
+* **Sample Call:**
+curl --location --request GET 'localhost:4000/genres'
+
+* **Notes:**
+  <_This endpoint lists the genres that are saved in the genre table._> 
+
+### Genre by name
+
+* **URL: `/genre/:name`**
+
+  <_Genre List by Name_>
+
+* **Method:**
+  `GET`
+
+* **Success Response:**
+  * **Code:** 200 <br />
+  * **Content-type:** application/json <br />
+    **Body:** 
+```json
+{
+    "status": 200,
+    "message": "Successful listing of genre",
+    "data": [
+        {
+            "name": "R&B",
+            "date_added": "2021-03-24T22:02:35.000Z",
+            "date_updated": null
+        }
+    ]
+}
+```
+* **Error Response:**
+  * **Code:** 404  <br />
+
+* **Error Response:**
+  * **Code:** 400 Bad Reqeust  <br />
+  * **Content-type:** application/json <br />
+    **Body:** 
+```json
+{
+    "status": 400,
+    "message": "Get list validation failed",
+    "error": [
+        {
+            "value": "not existing",
+            "msg": "genre name xxsamplexx does not exist",
+            "param": "name",
+            "location": "params"
+        }
+    ]
+}
+```
+* **Sample Call:**
+curl --location --request GET 'localhost:4000/genres/blues'
+
+* **Notes:**
+  <_This endpoint lists the genres that are saved in the genre table filtered by the primary key name._> 
+# Artist
+
+* **URL: `/artists`**
+
+  <_Artist List_>
+
+* **Method:**
+  `GET`
+
+* **Success Response:**
+  * **Code:** 200 <br />
+  * **Content-type:** application/json <br />
+    **Body:** 
+```json
+{
+    "status": 200,
+    "message": "Successful listing of artist",
+    "data": [
+        {
+            "name": "Sample Artist 1",
+            "date_added": "2021-03-24T22:07:03.000Z",
+            "date_updated": null
+        },
+        {
+            "name": "Sample Artist 2",
+            "date_added": "2021-03-24T22:07:03.000Z",
+            "date_updated": null
+        },
+        {
+            "name": "Sample Artist 3",
+            "date_added": "2021-03-24T22:07:03.000Z",
+            "date_updated": null
+        },
+        {
+            "name": "Sample Artist 4",
+            "date_added": "2021-03-24T22:07:22.000Z",
+            "date_updated": null
+        },
+        {
+            "name": "Sample Artist 5",
+            "date_added": "2021-03-24T22:07:22.000Z",
+            "date_updated": null
+        },
+        {
+            "name": "Sample Artist 6",
+            "date_added": "2021-03-24T22:07:22.000Z",
+            "date_updated": null
+        }
+    ]
+}
+```
+* **Error Response:**
+  * **Code:** 404 NOT FOUND <br />
+
+* **Sample Call:**
+curl --location --request GET 'localhost:4000/artists'
+
+* **Notes:**
+  <_This endpoint lists the artists that are saved the artist table._> 
+
+### Artist by name
+
+* **URL: `/artist/:name`**
+
+  <_Artist List by Name_>
+
+* **Method:**
+  `GET`
+
+* **Success Response:**
+  * **Code:** 200 <br />
+  * **Content-type:** application/json <br />
+    **Body:** 
+```json
+{
+    "status": 200,
+    "message": "Successful listing of artist",
+    "data": [
+        {
+            "name": "Sample Artist 1",
+            "date_added": "2021-03-24T22:07:03.000Z",
+            "date_updated": null
+        }
+    ]
+}
+```
+* **Error Response:**
+  * **Code:** 404 NOT FOUND <br />
+
+* **Error Response:**
+  * **Code:** 400 Bad Reqeust  <br />
+  * **Content-type:** application/json <br />
+    **Body:** 
+```json
+{
+    "status": 400,
+    "message": "Get list validation failed",
+    "error": [
+        {
+            "value": "Sample",
+            "msg": "artist name Sample does not exist",
+            "param": "name",
+            "location": "params"
+        }
+    ]
+}
+```
+* **Sample Call:**
+curl --location --request GET 'localhost:4000/artists/Sample Artist 1'
+
+* **Notes:**
+  <_This endpoint lists the artists that are saved in the artist table filtered by the primary key name._> 
+
+
+### Artist by genre
+
+* **URL: `/artist/:genre/genre`**
+
+  <_Artist List by Name_>
+
+* **Method:**
+  `GET`
+
+* **Success Response:**
+  * **Code:** 200 <br />
+  * **Content-type:** application/json <br />
+    **Body:** 
+```json
+{
+    "status": 200,
+    "message": "Successful listing of artist",
+    "data": [
+        {
+            "name": "Sample Artist 1",
+            "date_added": "2021-03-24T22:07:03.000Z",
+            "date_updated": null
+        },
+        {
+            "name": "Sample Artist 2",
+            "date_added": "2021-03-24T22:07:03.000Z",
+            "date_updated": null
+        }
+    ]
+}
+```
+* **Error Response:**
+  * **Code:** 404 NOT FOUND <br />
+
+* **Error Response:**
+  * **Code:** 400 Bad Reqeust  <br />
+  * **Content-type:** application/json <br />
+    **Body:** 
+```json
+{
+    "status": 400,
+    "message": "Get list validation failed",
+    "error": [
+        {
+            "value": "reds",
+            "msg": "Query returned an empty result",
+            "param": "genre",
+            "location": "params"
+        }
+    ]
+}
+```
+* **Sample Call:**
+curl --location --request GET 'localhost:4000/artists/blues/genre'
+
+* **Notes:**
+  <_This endpoint lists the artists that are saved in the artist table filtered by genre._> 
+
+# Albums
+
+* **URL: `/albums`**
+
+  <_Album List_>
+
+* **Method:**
+  `GET`
+
+* **Success Response:**
+  * **Code:** 200 <br />
+  * **Content-type:** application/json <br />
+    **Body:** 
+```json
+{
+    "status": 200,
+    "message": "Successful listing of album",
+    "data": [
+        {
+            "name": "Album 1",
+            "genre": "Blues",
+            "artist": "Sample Artist 1",
+            "date_added": "2021-03-24T22:08:43.000Z",
+            "date_updated": null
+        },
+        {
+            "name": "Album 2",
+            "genre": "Blues",
+            "artist": "Sample Artist 2",
+            "date_added": "2021-03-24T22:09:52.000Z",
+            "date_updated": null
+        },
+        {
+            "name": "Album 3",
+            "genre": "Soul",
+            "artist": "Sample Artist 2",
+            "date_added": "2021-03-24T22:10:52.000Z",
+            "date_updated": null
+        },
+        {
+            "name": "Album 4",
+            "genre": "R&B",
+            "artist": "Sample Artist 3",
+            "date_added": "2021-03-24T22:10:52.000Z",
+            "date_updated": null
+        },
+        {
+            "name": "Album 5",
+            "genre": "Rock",
+            "artist": "Sample Artist 3",
+            "date_added": "2021-03-24T22:10:52.000Z",
+            "date_updated": null
+        },
+        {
+            "name": "Album Test",
+            "genre": "Soul",
+            "artist": "Sample Artist 4",
+            "date_added": "2021-03-25T15:33:47.000Z",
+            "date_updated": null
+        }
+    ]
+}
+```
+* **Error Response:**
+  * **Code:** 404 NOT FOUND <br />
+
+* **Sample Call:**
+curl --location --request GET 'localhost:4000/albums'
+
+* **Notes:**
+  <_This endpoint lists the albums that are saved the album table._> 
+
+### Artist by name
+
+* **URL: `/albums/:name`**
+
+  <_Album List by Name_>
+
+* **Method:**
+  `GET`
+
+* **Success Response:**
+  * **Code:** 200 <br />
+  * **Content-type:** application/json <br />
+    **Body:** 
+```json
+{
+    "status": 200,
+    "message": "Successful listing of album",
+    "data": [
+        {
+            "name": "Album 1",
+            "genre": "Blues",
+            "artist": "Sample Artist 1",
+            "date_added": "2021-03-24T22:08:43.000Z",
+            "date_updated": null
+        }
+    ]
+}
+```
+* **Error Response:**
+  * **Code:** 404 NOT FOUND <br />
+
+* **Error Response:**
+  * **Code:** 400 Bad Reqeust  <br />
+  * **Content-type:** application/json <br />
+    **Body:** 
+```json
+{
+    "status": 400,
+    "message": "Get list validation failed",
+    "error": [
+        {
+            "value": "Album 100",
+            "msg": "album name Album 100 does not exist",
+            "param": "name",
+            "location": "params"
+        }
+    ]
+}
+```
+* **Sample Call:**
+curl --location --request GET 'localhost:4000/albums/Album 1'
+
+* **Notes:**
+  <_This endpoint lists the albums that are saved in the artist table filtered by primary key name._> 
+
+### Album by genre
+
+* **URL: `/albums/:genre/genre`**
+
+  <_Album List by Genre_>
+
+* **Method:**
+  `GET`
+
+* **Success Response:**
+  * **Code:** 200 <br />
+  * **Content-type:** application/json <br />
+    **Body:** 
+```json
+{
+    "status": 200,
+    "message": "Successful listing of album",
+    "data": [
+        {
+            "name": "Album 1",
+            "genre": "Blues",
+            "artist": "Sample Artist 1",
+            "date_added": "2021-03-24T22:08:43.000Z",
+            "date_updated": null
+        },
+        {
+            "name": "Album 2",
+            "genre": "Blues",
+            "artist": "Sample Artist 2",
+            "date_added": "2021-03-24T22:09:52.000Z",
+            "date_updated": null
+        }
+    ]
+}
+```
+* **Error Response:**
+  * **Code:** 404 NOT FOUND <br />
+
+* **Error Response:**
+  * **Code:** 400 Bad Reqeust  <br />
+  * **Content-type:** application/json <br />
+    **Body:** 
+```json
+{
+    "status": 400,
+    "message": "Get list validation failed",
+    "error": [
+        {
+            "value": "reds",
+            "msg": "album genre reds does not exist",
+            "param": "genre",
+            "location": "params"
+        }
+    ]
+}
+```
+* **Sample Call:**
+curl --location --request GET 'localhost:4000/albums/Album 1'
+
+* **Notes:**
+  <_This endpoint lists the albums that are saved in the album table filtered by genre._> 
+
+
+### Album by artist
+
+* **URL: `/albums/:genre/artist`**
+
+  <_Artist Albums List_>
+
+* **Method:**
+  `GET`
+
+* **Success Response:**
+  * **Code:** 200 <br />
+  * **Content-type:** application/json <br />
+    **Body:** 
+```json
+{
+    "status": 200,
+    "message": "Successful listing of album",
+    "data": [
+        {
+            "name": "Album 1",
+            "genre": "Blues",
+            "artist": "Sample Artist 1",
+            "date_added": "2021-03-24T22:08:43.000Z",
+            "date_updated": null
+        }
+    ]
+}
+```
+* **Error Response:**
+  * **Code:** 404 NOT FOUND <br />
+
+* **Error Response:**
+  * **Code:** 400 Bad Reqeust  <br />
+  * **Content-type:** application/json <br />
+    **Body:** 
+```json
+{
+    "status": 400,
+    "message": "Get list validation failed",
+    "error": [
+        {
+            "value": "reds",
+            "msg": "album genre reds does not exist",
+            "param": "genre",
+            "location": "params"
+        }
+    ]
+}
+```
+* **Sample Call:**
+curl --location --request GET 'localhost:4000/albums/Sample Artist 1/artist'
+
+* **Notes:**
+  <_This endpoint lists the albums that are saved in the album table filtered by genre._> 

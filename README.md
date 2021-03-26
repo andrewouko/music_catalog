@@ -630,3 +630,231 @@ curl --location --request GET 'localhost:4000/albums/Sample Artist 1/artist'
 
 * **Notes:**
   <_This endpoint lists the albums that are saved in the album table filtered by genre._> 
+
+# Cart
+
+* **URL: `/cart`**
+
+  <_Add to cart_>
+
+* **Method:**
+  `POST`
+
+* **Data Params for an Album addition**
+```json
+{"album": "Album 1"}
+```
+* **Data Params for an Song addition**
+```json
+{"song": "Song 1"}
+```
+
+* **Success Response:**
+  * **Code:** 200 <br />
+  * **Content-type:** application/json <br />
+    **Body:** 
+```json
+{
+    "status": 200,
+    "message": "Successfully added to cart",
+    "data": {
+        "id": 49,
+        "album": "Album 1",
+        "client_ip": "::1"
+    }
+}
+```
+* **Error Response:**
+  * **Code:** 404 NOT FOUND <br />
+
+* **Error Response:**
+  * **Code:** 400 Bad Reqeust  <br />
+  * **Content-type:** application/json <br />
+    **Body:** 
+```json
+{
+    "status": 400,
+    "message": "Add to cart validation failed",
+    "error": [
+        {
+            "msg": "Invalid value(s)",
+            "param": "_error",
+            "nestedErrors": [
+                {
+                    "msg": "Invalid value",
+                    "param": "song",
+                    "location": "body"
+                },
+                {
+                    "msg": "song name undefined does not exist",
+                    "param": "song",
+                    "location": "body"
+                },
+                {
+                    "value": "Album 100",
+                    "msg": "album name Album 100 does not exist",
+                    "param": "album",
+                    "location": "body"
+                }
+            ]
+        }
+    ]
+}
+```
+
+* **Sample Call:**
+curl --location --request POST 'localhost:4000/cart' \
+--header 'Content-Type: application/json' \
+--data-raw '{"album": "Album 1"}'
+
+* **Notes:**
+  <_This endpoint adds an item to the cart table._> 
+
+### Cart items
+
+
+* **URL: `/cart`**
+
+  <_List items in a particular client's cart_>
+
+* **Method:**
+  `GET`
+
+* **Success Response:**
+  * **Code:** 200 <br />
+  * **Content-type:** application/json <br />
+    **Body:** 
+```json
+{
+    "status": 200,
+    "message": "Successful listing of cart",
+    "data": [
+        {
+            "ID": 49,
+            "client_ip": "::1",
+            "song": null,
+            "album": "Album 1",
+            "isPurchased": 0
+        },
+        {
+            "ID": 50,
+            "client_ip": "::1",
+            "song": null,
+            "album": "Album 1",
+            "isPurchased": 0
+        }
+    ]
+}
+```
+* **Error Response:**
+  * **Code:** 404 NOT FOUND <br />
+
+* **Sample Call:**
+curl --location --request GET 'localhost:4000/cart'
+
+* **Notes:**
+  <_This endpoint lists the current cart items for a given client ip address as saved in the database._> 
+### Cart purchase (Order)
+
+* **URL: `/cart`**
+
+  <_Add to cart_>
+
+* **Method:**
+  `PUT`
+
+* **Success Response:**
+  * **Code:** 200 <br />
+  * **Content-type:** application/json <br />
+    **Body:** 
+```json
+{
+    "status": 200,
+    "message": "Successfully purchased cart",
+    "data": {
+        "fieldCount": 0,
+        "affectedRows": 45,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": ")Rows matched: 45  Changed: 2  Warnings: 0",
+        "protocol41": true,
+        "changedRows": 2
+    }
+}
+```
+* **Error Response:**
+  * **Code:** 404 NOT FOUND <br />
+
+* **Sample Call:**
+curl --location --request POST 'localhost:4000/cart' \
+--header 'Content-Type: application/json' \
+--data-raw '{"album": "Album 1"}'
+
+* **Notes:**
+  <_This endpoint adds an item to the cart table._> 
+
+
+### Remove cart item
+
+* **URL: `/cart`**
+
+  <_Add to cart_>
+
+* **Method:**
+  `DELETE`
+
+* **Data Params for an item delete**
+```json
+{"id": 2}
+```
+
+* **Success Response:**
+  * **Code:** 200 <br />
+  * **Content-type:** application/json <br />
+    **Body:** 
+```json
+{
+    "status": 200,
+    "message": "Successfully removed item from cart",
+    "data": {
+        "fieldCount": 0,
+        "affectedRows": 1,
+        "insertId": 0,
+        "serverStatus": 2,
+        "warningCount": 0,
+        "message": "",
+        "protocol41": true,
+        "changedRows": 0
+    }
+}
+```
+* **Error Response:**
+  * **Code:** 404 NOT FOUND <br />
+
+* **Error Response:**
+  * **Code:** 400 Bad Reqeust  <br />
+  * **Content-type:** application/json <br />
+    **Body:** 
+```json
+{
+    "status": 400,
+    "message": "Remove from cart validation failed",
+    "error": [
+        {
+            "value": "fjf",
+            "msg": "cart id fjf does not exist",
+            "param": "id",
+            "location": "body"
+        }
+    ]
+}
+```
+
+* **Sample Call:**
+curl --location --request DELETE 'localhost:4000/cart' \
+--header 'Content-Type: application/json' \
+--data-raw '{"id": "3"}'
+
+* **Notes:**
+  <_This endpoint removes an item from the cart table._> 

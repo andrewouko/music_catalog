@@ -1,0 +1,4 @@
+.env
+node_modules
+catalog_api.log
+error.log
